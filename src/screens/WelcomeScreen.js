@@ -1,8 +1,22 @@
-import { View, TouchableOpacity, SafeAreaView } from 'react-native'
+import { View, SafeAreaView, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { Button, Text, TextInput } from 'react-native-paper';
 import styles from '../screen.styles.js/WelcomeScreenStyles';
-import * as SQLite from 'expo-sqlite'
+import * as SQLite from 'expo-sqlite';
+import { CONSTANTS } from '../utils/Constants';
+
+const { 
+    FETCH_DATA_QUERY, 
+    CREATE_TABLE_QUERY,
+    ADD_ITEM_QUERY,
+    ERROR,
+    ALERT_MESSAGE,
+    CONTAINED,
+    USERNAME,
+    PASSWORD,
+    OUTLINED,
+    
+} = CONSTANTS
 
 const db = SQLite.openDatabase('db.testDb') // returns Database object
 
@@ -11,20 +25,21 @@ export default function WelcomeScreen({navigation}) {
     const [password, setPassword] = useState('')
     const [data, setData] = useState(null)
 
-    // Check if the items table exists if not create it
+    //creates db table
     const createTable = () => {
         db.transaction(tx => {
             tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT, count INT)'
+                CREATE_TABLE_QUERY
             )
         })
     }
 
+    //checks if user is signed in and naviagtes if true
     const fetchData = () => {
         try {
             db.transaction((tx) => {
                 tx.executeSql(
-                    "SELECT * FROM items",
+                    FETCH_DATA_QUERY,
                     [],
                     (tx, result) => {
                         var len = result.rows.length;
@@ -40,18 +55,26 @@ export default function WelcomeScreen({navigation}) {
         }
     }
 
-    const newItem = () => {
+    //adds user to db and signs in to news page
+    const addNewItem = () => {
         db.transaction(tx => {
-            tx.executeSql('INSERT INTO items (text, count) values (?, ?)', [name, 0],
+            tx.executeSql(ADD_ITEM_QUERY, [name, 0],
                 (txObj, resultSet) => setData({ data: data.concat(
                     { id: resultSet.insertId, text: name, count: 0 }) }),
-                (txObj, error) => console.log('Error', error),
-                // navigation.navigate("News")
-                // console.log(resultSet)
+                (txObj, error) => console.log(ERROR, error),
+                navigation.navigate("News")
 
             )
         })
         console.log('data')
+    }
+
+    const handleLoginPress = () => {
+        if (name.length > 4 && name != '') 
+            addNewItem()
+        else 
+            Alert.alert(ALERT_MESSAGE);
+
     }
 
     const deleteItem = (id) => {
@@ -71,10 +94,6 @@ export default function WelcomeScreen({navigation}) {
         })
     }
 
-    const renderItem = ({ item }) => {
-        <Item title={item.text} />
-    };
-
     useEffect(() => {
         createTable()
         fetchData()
@@ -82,42 +101,28 @@ export default function WelcomeScreen({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.header}>Welcome to LendigoNews</Text>
+            <Text style={styles.header} onPress={() => navigation.navigate("News")}>Welcome to LendigoNews</Text>
             <TextInput 
-                label='Username'
-                mode='flat'
+                style={styles.input}
+                theme={{ roundness: 10 }}
+                label={USERNAME}
+                mode={OUTLINED}
                 onChangeText={(value) => setName(value)}
                 value={name}
             />
 
             <TextInput 
-                label='Password'
-                mode='outlined'
+                style={styles.input}
+                theme={{ roundness: 10 }}
+                label={PASSWORD}
+                mode={OUTLINED}
                 onChangeText={(value) => setPassword(value)}
                 value={password}
             />
 
-            
-            <Button theme={{ roundness: 6 }} mode='contained' style={styles.button} onPress={() => {newItem()}} >Sign up</Button>
-            <Button theme={{ roundness: 10 }} mode='contained' style={styles.button} onPress={() => navigation.navigate("News")} >Navigate</Button>
-{/* 
-            <Text style={styles.header}>Enter Username and </Text>
-            <TouchableOpacity onPress={() => {newItem()}} style={styles.green}>
-            <Text style={styles.white}>Add New Item</Text>
-            </TouchableOpacity>
-            <TextInput 
-                label='Username'
-                onChangeText={(value) => setName(value)}
-                value={name}
-            />
+            <Button theme={{ roundness: 6 }} mode={CONTAINED} style={styles.button} onPress={() => {handleLoginPress()}} >Sign up</Button>
 
-            <Button theme={{ roundness: 6 }} mode='contained' style={styles.button} onPress={() => {newItem()}} >Sign up</Button> */}
-
-            {/* <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-            /> */}
+            <Text style={styles.aboutAuthor} onPress={() => navigation.navigate('About')} >About Seun</Text>
 
         </SafeAreaView>
     )

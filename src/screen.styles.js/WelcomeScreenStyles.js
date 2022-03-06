@@ -1,31 +1,51 @@
 import { StyleSheet, Dimensions } from "react-native";
+import { CONSTANTS } from "../utils/Constants";
 
-const {deviceHeight, deviceWidth} = Dimensions.get('window');
+const { deviceHeight, deviceWidth } = Dimensions.get('window');
+const { 
+    CENTER,
+    BLACK,
+    PRIMARY_COLOR,
+    SECONDARY_COLOR,
+    DODSIS_LIGHT,
+    DOSIS_REGULAR,
+    DOSIS_BOLD,
+    BACKGROUND_COLOR,
+    PLACEHOLDER_COLOR,
+
+} = CONSTANTS
+
 
 export default StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#009fb8',
+        backgroundColor: BACKGROUND_COLOR,
         height: deviceHeight,
         width: deviceWidth,
     },
     header : {
-        alignSelf: 'center',
-        fontSize: 24,
+        alignSelf: CENTER,
+        fontSize: 30,
         marginVertical: 20,
-
+        marginTop: 70,
+        fontFamily: DOSIS_BOLD,
     },
     input: {
-        // borderWidth: 1,
-        // borderColor: '#016b11',
-        // borderRadius: 5,
+        marginTop: 30,
+        marginHorizontal: 20,
+        borderRadius: 10,
+        
     },
     button: {
-        marginTop: 20,
-        width: 300,
-        // height: 40,
-        alignSelf: 'center',
-
-    }
+        marginTop: 50,
+        width: 200,
+        alignSelf: CENTER,
+    },
+    aboutAuthor: {
+        textAlign: CENTER,
+        fontSize: 24,
+        marginTop: 30,
+        fontFamily: DOSIS_BOLD,
+    },
 })

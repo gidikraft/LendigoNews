@@ -22,7 +22,7 @@ const RootStackNavigator = () => {
             <RootStack.Screen 
                 name='About'
                 component={AboutScreen}
-                options={{ headerTitle: 'Welcome' }}
+                options={{ headerShown: false }}
             />
         </RootStack.Navigator>
     )
