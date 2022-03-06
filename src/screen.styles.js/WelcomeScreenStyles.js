@@ -46,6 +46,10 @@ export default StyleSheet.create({
         textAlign: CENTER,
         fontSize: 24,
         marginTop: 30,
-        fontFamily: DOSIS_BOLD,
+        fontFamily: DOSIS_REGULAR,
     },
+    seun: {
+        color: PRIMARY_COLOR,
+        fontFamily: DOSIS_BOLD,
+    }
 })

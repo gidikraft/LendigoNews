@@ -122,7 +122,9 @@ export default function WelcomeScreen({navigation}) {
 
             <Button theme={{ roundness: 6 }} mode={CONTAINED} style={styles.button} onPress={() => {handleLoginPress()}} >Sign up</Button>
 
-            <Text style={styles.aboutAuthor} onPress={() => navigation.navigate('About')} >About Seun</Text>
+            <Text style={styles.aboutAuthor} >
+                Learn more about: <Text onPress={() => navigation.navigate('About')} style={styles.seun} >Seun Fagade</Text>
+            </Text>
 
         </SafeAreaView>
     )

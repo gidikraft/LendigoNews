@@ -4,7 +4,8 @@ import { CONSTANTS } from "../utils/Constants";
 
 const { deviceHeight, deviceWidth } = Dimensions.get('window');
 const { CENTER, 
-    BLACK, 
+    BLACK,
+    PRIMARY_COLOR,
     HIDDEN,
     ROW,
     DOSIS_BOLD,
@@ -27,6 +28,7 @@ export default StyleSheet.create({
         fontFamily: DOSIS_BOLD,
         marginRight: 30,
         marginTop: 10,
+        color: PRIMARY_COLOR
     },
     authorView: {
         padding: 10,

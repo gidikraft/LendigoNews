@@ -15,10 +15,10 @@ const githubPressHandler = () => Linking.openURL(GITHUB_URL)
     return (
         <ScrollView >
             <SafeAreaView style={styles.container}>
-                <Text style={styles.homepage}>Homepage</Text>
+                <Text style={styles.homepage} onPress={() => navigation.navigate('Welcome')}>Homepage</Text>
                 <View style={styles.authorView}>
                     <View style={styles.cardView} >
-                        <Text style={styles.cardHeaderText} onPress={() => navigation.navigate('Welcome')}>Seun Fagade</Text>
+                        <Text style={styles.cardHeaderText}>Seun Fagade</Text>
                         <Text style={styles.cardText}>Mobile Developer</Text>
                     </View>
                 </View>
