@@ -42,7 +42,7 @@ export default StyleSheet.create({
         justifyContent: FLEX_END,
         alignItems: CENTER,
         marginRight: TEN,
-        marginTop: TWENTY,
+        marginTop: THIRTY,
     },
     logout: {
         marginRight: TEN,
@@ -53,7 +53,7 @@ export default StyleSheet.create({
     header : {
         alignSelf: CENTER,
         fontSize: THIRTY,
-        marginTop: THIRTY,
+        marginTop: TEN,
         fontFamily: DOSIS_BOLD,
         color: WHITE
     },
@@ -94,6 +94,7 @@ export default StyleSheet.create({
         fontWeight: BOLD,
         alignSelf: FLEX_END,
         marginTop: TEN,
+        marginRight: THIRTY,
         
     },
     points: {
@@ -102,6 +103,7 @@ export default StyleSheet.create({
         color: PRIMARY_COLOR,
         alignSelf: FLEX_END,
         marginBottom: TEN,
+        marginRight: THIRTY,
     },
     footerView: {
         flexDirection: ROW,

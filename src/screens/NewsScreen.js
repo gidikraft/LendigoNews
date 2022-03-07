@@ -57,7 +57,6 @@ export default function NewsScreen({ navigation }) {
         try {
             setIsLoading(true);
             const response = await axios.get(newsURL);
-            // console.log(response.data);
             if (response.status === TWO_HUNDRED) {
                 setNews(response.data.hits);
                 setIsLoading(false);
@@ -84,25 +83,25 @@ export default function NewsScreen({ navigation }) {
     //fetch user details if logged in
     const fetchData = () => {
         try {
-        db.transaction((tx) => {
-            tx.executeSql(
-                FETCH_DATA_QUERY,
-                [],
-                (tx, result) => {
-                    var len = result.rows.length;
-                    if ( len > 0) {
-                        len = result.rows.length-1
+            db.transaction((tx) => {
+                tx.executeSql(
+                    FETCH_DATA_QUERY,
+                    [],
+                    (tx, result) => {
+                        var len = result.rows.length;
+                        if ( len > 0) {
+                            len = result.rows.length-1
 
-                        var userName = result.rows.item(len).text
-                        var userAge = result.rows.item(len).count
-                        
-                        console.log(result.rows)
-                        dispatch(setName(userName))
-                        dispatch(setAge(userAge))
+                            var userName = result.rows.item(len).text
+                            var userAge = result.rows.item(len).count
+                            
+                            console.log(result.rows)
+                            dispatch(setName(userName))
+                            dispatch(setAge(userAge))
+                        }
                     }
-                }
-            ) 
-        })
+                ) 
+            })
         } catch (error) {
         console.log(error)
         }
@@ -113,35 +112,33 @@ export default function NewsScreen({ navigation }) {
         try {
             db.transaction((tx) => {
                 tx.executeSql((
-                    'DELETE FROM items where user_id=?',
-                    [0],
-
-                    // (tx, results) => {
-                    //     console.log(name)
-                    //     console.log('Results', results.rowsAffected);
-                    //     if (results.rowsAffected > 0) {
-                    //       Alert.alert(
-                    //         'Success',
-                    //         'User deleted successfully',
-                    //         [
-                    //           {
-                    //             text: 'Ok',
-                    //             onPress: () => navigation.navigate('Welcome'),
-                    //           },
-                    //         ],
-                    //         // { cancelable: false }
-                    //       );
-                    //     } else {
-                    //       alert('Please insert a valid User Id');
-                    //     }
-                    // },
-                    DELETE_DATA_QUERY,
+                    'DELETE * FROM items',
                     [],
+
+                    (tx, results) => {
+                        console.log('Results', results.rowsAffected);
+                        if (results.rowsAffected > 0) {
+                          Alert.alert(
+                            'Success',
+                            'Signed out successfully',
+                            [
+                              {
+                                text: 'Ok',
+                                onPress: () => navigation.navigate('Welcome'),
+                              },
+                            ],
+                            { cancelable: false }
+                          );
+                        } else {
+                          alert('Please insert a valid User Id');
+                        }
+                    },
+                    // DELETE_DATA_QUERY,
+                    // [],
                     // () => { navigation.navigate("Welcome") },
                     error => { console.log(error) }
                 ))
             })
-            // navigation.navigate("Welcome")
             console.log(name)
         } catch (error) {
             console.log(error)
@@ -181,7 +178,7 @@ export default function NewsScreen({ navigation }) {
                         </Text>
                     </View>
                     <Text style={styles.createdAt}>
-                        At: { item.created_at.slice(ELEVEN, NINETEEN) + ' ' + item.created_at.slice(ZERO, TEN)}
+                        { item.created_at.slice(ELEVEN, NINETEEN) + ' ' + item.created_at.slice(ZERO, TEN)}
                     </Text>
                     <Text style={styles.points}>Views: {item.points}</Text>
                 </View>
@@ -206,10 +203,9 @@ export default function NewsScreen({ navigation }) {
                     onEndReached={() => setPage(page+ONE)}
                     refreshControl={
                         <RefreshControl
-                        refreshing={isRefreshing}
-                        onRefresh={pullToRefresh}
-                        tintColor={PRIMARY_COLOR}
-                        colors={{...PRIMARY_COLOR}}
+                            refreshing={isRefreshing}
+                            onRefresh={pullToRefresh}
+                            tintColor={PRIMARY_COLOR}
                         />
                     }
                     renderItem={renderNews} 

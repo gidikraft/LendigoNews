@@ -21,6 +21,7 @@ const { CENTER,
     TWENTY_FOUR,
     THIRTY,
     THIRTY_SIX,
+    FORTY,
     THREE_HUNDRED,
 } = CONSTANTS
 
@@ -35,7 +36,7 @@ export default StyleSheet.create({
         justifyContent: FLEX_END,
         alignItems: CENTER,
         marginRight: THIRTY,
-        marginTop: TWENTY,
+        marginTop: FORTY,
     },
     homepage: {
         fontSize: TWENTY,
@@ -45,56 +46,52 @@ export default StyleSheet.create({
     },
     authorView: {
         padding: TEN,
-
     },
     cardView: {
-        marginTop: TWENTY
+        marginTop: TEN,
     },
     cardHeaderText: {
         textAlign: CENTER,
         fontSize: THIRTY_SIX,
         marginBottom: TEN,
         fontFamily: DOSIS_BOLD,
-
     },
     cardText: {
         textAlign: CENTER,
         fontSize: TWENTY,
-        marginBottom: TEN
-
+        marginBottom: TEN,
     },
     mainImageView: {
         height: THREE_HUNDRED,
+        width: THREE_HUNDRED,
         overflow: HIDDEN,
         shadowColor: BLACK,
-        shadowRadius: TEN,
+        shadowRadius: TWENTY,
         shadowOpacity: ONE,
         padding: TEN,
         marginVertical: THIRTY,
-        width: HUNDRED_PC
-        
+        width: HUNDRED_PC,        
     },
     banner: {
         alignSelf: CENTER,
         width: EIGHTY_PC,
         height: HUNDRED_PC,
-        borderRadius: TWENTY
+        borderRadius: TWENTY,
     },
     main: {
-        padding: TEN
+        padding: TEN,
     },
     mainSummary: {
         textAlign: CENTER,
         fontSize: TWENTY_FOUR,
         marginBottom: TEN,
-        fontFamily: DOSIS_BOLD
+        fontFamily: DOSIS_BOLD,
     },
     mainText: {
         textAlign: CENTER,
         fontSize: TWENTY,
         fontFamily: DOSIS_REGULAR,
         padding: FIVE,
-
     },
     footerText: {
         textAlign: CENTER,
@@ -107,10 +104,8 @@ export default StyleSheet.create({
         marginTop: TEN,
         alignSelf: CENTER,
         padding: TWENTY,
-
     },
     footerItem: {
         marginRight: TWENTY,
-
     }
 })
