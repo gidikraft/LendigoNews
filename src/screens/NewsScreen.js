@@ -1,9 +1,21 @@
-import { View, SafeAreaView, FlatList, Linking, TouchableOpacity, Alert, RefreshControl, Text } from 'react-native'
-import React, { useState, useEffect } from 'react';
+import { View, 
+    SafeAreaView, 
+    FlatList, 
+    Linking, 
+    TouchableOpacity, 
+    RefreshControl, 
+    Text, 
+    Alert,
+} from 'react-native';
+import { ActivityIndicator } from 'react-native-paper'
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from '../screen.styles.js/NewsScreenStyles';
 import * as SQLite from "expo-sqlite";
 import axios from 'axios';
 import { CONSTANTS } from '../utils/Constants';
+import { FontAwesome } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { setName, setAge } from '../redux/actions';
 
 const db = SQLite.openDatabase('db.testDb') // returns Database object
 
@@ -16,17 +28,27 @@ export default function NewsScreen({ navigation }) {
         FETCH_DATA_QUERY,
         DELETE_DATA_QUERY,
         PRIMARY_COLOR,
-
+        WHITE,
+        ZERO,
+        ONE,
+        TEN,
+        ELEVEN,
+        NINETEEN,
+        TWENTY_FOUR,
+        TWO_HUNDRED,
+        TWO_THOUSAND,
+        SIGN_OUT,
+        LARGE,
     } = CONSTANTS;
 
-    const [name, setName] = useState('')
-    const [age, setAge] = useState('');
-    const [news, setNews] = useState();
+    const { name, age } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
 
+    const [news, setNews] = useState();
     const [isLoading, setIsLoading] = useState(false)
-    // const [data, setData] = useState(null);
-    const [page, setPage] = useState(1);
-    const [isRefreshing, setIsRefreshing] = useState(false)
+    const [page, setPage] = useState(0);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null)
 
     const newsURL = `${NEWSURL}${page}`
 
@@ -36,9 +58,8 @@ export default function NewsScreen({ navigation }) {
             setIsLoading(true);
             const response = await axios.get(newsURL);
             // console.log(response.data);
-            if (response.status === 200) {
+            if (response.status === TWO_HUNDRED) {
                 setNews(response.data.hits);
-
                 setIsLoading(false);
                 return;
             } else {
@@ -46,6 +67,7 @@ export default function NewsScreen({ navigation }) {
             }
         } catch (error) {
             console.log(FETCH_NEWS_ERROR);
+            setErrorMessage(error)
         }
         console.log(response.data);
     };
@@ -60,7 +82,8 @@ export default function NewsScreen({ navigation }) {
     }
 
     //fetch user details if logged in
-    const fetchData = () => {try {
+    const fetchData = () => {
+        try {
         db.transaction((tx) => {
             tx.executeSql(
                 FETCH_DATA_QUERY,
@@ -68,13 +91,14 @@ export default function NewsScreen({ navigation }) {
                 (tx, result) => {
                     var len = result.rows.length;
                     if ( len > 0) {
-                        var userName = result.rows.item(0).text
-                        var userAge = result.rows.item(0).count
+                        len = result.rows.length-1
+
+                        var userName = result.rows.item(len).text
+                        var userAge = result.rows.item(len).count
                         
-                        var len = result.rows.length-1
-                        // console.log(result.rows)
-                        setName(userName)
-                        setAge(userAge)
+                        console.log(result.rows)
+                        dispatch(setName(userName))
+                        dispatch(setAge(userAge))
                     }
                 }
             ) 
@@ -87,19 +111,38 @@ export default function NewsScreen({ navigation }) {
     //sign out by removing user from db
     const removeData = () => {
         try {
-            // await AsyncStorage.clear()
             db.transaction((tx) => {
                 tx.executeSql((
+                    'DELETE FROM items where user_id=?',
+                    [0],
+
+                    // (tx, results) => {
+                    //     console.log(name)
+                    //     console.log('Results', results.rowsAffected);
+                    //     if (results.rowsAffected > 0) {
+                    //       Alert.alert(
+                    //         'Success',
+                    //         'User deleted successfully',
+                    //         [
+                    //           {
+                    //             text: 'Ok',
+                    //             onPress: () => navigation.navigate('Welcome'),
+                    //           },
+                    //         ],
+                    //         // { cancelable: false }
+                    //       );
+                    //     } else {
+                    //       alert('Please insert a valid User Id');
+                    //     }
+                    // },
                     DELETE_DATA_QUERY,
                     [],
-                    () => { navigation.navigate("Welcome") },
-                    error => { console.log(error) },
-                    console.log(name)
-
+                    // () => { navigation.navigate("Welcome") },
+                    error => { console.log(error) }
                 ))
             })
             // navigation.navigate("Welcome")
-            // console.log(name)
+            console.log(name)
         } catch (error) {
             console.log(error)
         }
@@ -109,27 +152,19 @@ export default function NewsScreen({ navigation }) {
         createTable()
         fetchData()
         fetchNews()
-    }, [])
+    }, [page])
 
     //set timeout
-    const wait = (timeout) => {
-        return new Promise(resolve => setTimeout(resolve, timeout));
-    }
+    const wait = (timeout) => new Promise(resolve => setTimeout(resolve, timeout));
 
     //open news article in web
-    const postPressHandler =(news) => {
-        Linking.openURL(news.url)
-    }
-
-    const onEnd = () => {
-        Alert.alert('You Have Reached To List End...');
-    }
+    const postPressHandler =(news) => Linking.openURL(news.url)
 
     //pull down flatlist to refresh
-    const pullToRefresh = React.useCallback(() => {
+    const pullToRefresh = useCallback(() => {
         setIsRefreshing(true);
         fetchNews();
-        wait(2000).then(() => setIsRefreshing(false));
+        wait(TWO_THOUSAND).then(() => setIsRefreshing(false));
       }, []);
 
     //render flatlist items
@@ -138,37 +173,60 @@ export default function NewsScreen({ navigation }) {
             <View>
                 <View style={styles.news}>
                     <View style={styles.newsBody}>
-                        <Text style={styles.newsAuthor}>{item.author}</Text>
-                        <Text style={styles.newsTitle}>{item.title}</Text>
+                        <Text style={styles.newsAuthor}>
+                            {item.author.charAt(ZERO).toUpperCase() + item.author.slice(ONE)}
+                        </Text>
+                        <Text style={styles.newsTitle}>
+                            {item.title}
+                        </Text>
                     </View>
-                    <Text style={styles.createdAt}>{item.created_at}</Text>
+                    <Text style={styles.createdAt}>
+                        At: { item.created_at.slice(ELEVEN, NINETEEN) + ' ' + item.created_at.slice(ZERO, TEN)}
+                    </Text>
                     <Text style={styles.points}>Views: {item.points}</Text>
                 </View>
             </View>
         </TouchableOpacity>
     );
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.logout} onPress={() => {removeData()}} >Logout</Text>
-            <Text style={styles.header} onPress={() => {navigation.navigate('Welcome')}} >Welcome back {name} </Text>
-            <Text style={styles.headerSubtitle}>Latest update from Hacker News!</Text>
+    if (news) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <View style={styles.logoutView}>
+                    <Text style={styles.logout} onPress={() => {navigation.navigate('Welcome')}} >Logout</Text>
+                    <FontAwesome name={SIGN_OUT} size={TWENTY_FOUR} color={WHITE} />
+                </View>
+                <Text style={styles.header} onPress={() => {removeData()}} >Welcome back {name} </Text>
+                <Text style={styles.headerSubtitle}>Latest update from Hacker News!</Text>
 
-            <FlatList 
-                data = {news}
-                keyExtractor={(item, itemIndex) => itemIndex}
-                onEndReachedThreshold={0}
-                onEndReached={onEnd}
-                refreshControl={
-                    <RefreshControl
-                      refreshing={isRefreshing}
-                      onRefresh={pullToRefresh}
-                      tintColor={PRIMARY_COLOR}
-                      colors={{...PRIMARY_COLOR}}
-                    />
-                }
-                renderItem={renderNews} 
-            />
-        </SafeAreaView>
-    )
+                <FlatList 
+                    data = {news}
+                    keyExtractor={(item, itemIndex) => itemIndex}
+                    onEndReachedThreshold={ZERO}
+                    onEndReached={() => setPage(page+ONE)}
+                    refreshControl={
+                        <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={pullToRefresh}
+                        tintColor={PRIMARY_COLOR}
+                        colors={{...PRIMARY_COLOR}}
+                        />
+                    }
+                    renderItem={renderNews} 
+                />
+            </SafeAreaView>
+        )
+    } else if (errorMessage) {
+        return (
+            <View style={styles.container}>
+              <Text style={styles.errorMessage}>{errorMessage}</Text>
+            </View>
+        );
+    } else {
+        return (
+            <View style={styles.container}>
+              <ActivityIndicator animating={true} size={LARGE} style={styles.activityIndicator} color={PRIMARY_COLOR} />
+            </View>
+        );
+    }
 }

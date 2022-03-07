@@ -3,26 +3,31 @@ import React, { useState, useEffect } from 'react';
 import { Button, Text, TextInput } from 'react-native-paper';
 import styles from '../screen.styles.js/WelcomeScreenStyles';
 import * as SQLite from 'expo-sqlite';
+import { useSelector, useDispatch } from 'react-redux';
+import { setName, setAge } from '../redux/actions';
 import { CONSTANTS } from '../utils/Constants';
 
 const { 
     FETCH_DATA_QUERY, 
     CREATE_TABLE_QUERY,
-    ADD_ITEM_QUERY,
+    INSERT_ITEM_QUERY,
     ERROR,
     ALERT_MESSAGE,
     CONTAINED,
     USERNAME,
     PASSWORD,
     OUTLINED,
-    
+    LOGIN
 } = CONSTANTS
 
 const db = SQLite.openDatabase('db.testDb') // returns Database object
 
 export default function WelcomeScreen({navigation}) {
-    const [name, setName] = useState('')
-    const [password, setPassword] = useState('')
+    const { name, age } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
+
+    // const [name, setName] = useState('')
+    // const [password, setPassword] = useState('')
     const [data, setData] = useState(null)
 
     //creates db table
@@ -49,7 +54,6 @@ export default function WelcomeScreen({navigation}) {
                     }
                 ) 
             })
-            
         } catch (error) {
         console.log(error)
         }
@@ -57,16 +61,18 @@ export default function WelcomeScreen({navigation}) {
 
     //adds user to db and signs in to news page
     const addNewItem = () => {
-        db.transaction(tx => {
-            tx.executeSql(ADD_ITEM_QUERY, [name, 0],
-                (txObj, resultSet) => setData({ data: data.concat(
-                    { id: resultSet.insertId, text: name, count: 0 }) }),
-                (txObj, error) => console.log(ERROR, error),
-                navigation.navigate("News")
+        dispatch(setName(name))
+        dispatch(setAge(age))
 
+        db.transaction(tx => {
+            tx.executeSql(INSERT_ITEM_QUERY, [name, age],
+                (txObj, resultSet) => setData({ data: data.concat(
+                    { id: resultSet.insertId, text: name, count: age }) }),
+                (txObj, error) => console.log(ERROR, error),
+                navigation.navigate("News"),
+                // console.log('add news data'),
             )
         })
-        console.log('data')
     }
 
     const handleLoginPress = () => {
@@ -74,7 +80,6 @@ export default function WelcomeScreen({navigation}) {
             addNewItem()
         else 
             Alert.alert(ALERT_MESSAGE);
-
     }
 
     const deleteItem = (id) => {
@@ -102,30 +107,29 @@ export default function WelcomeScreen({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header} onPress={() => navigation.navigate("News")}>Welcome to LendigoNews</Text>
+            <Text style={styles.header} onPress={() => console.log(name)}>{name} is {age} years old</Text>
             <TextInput 
                 style={styles.input}
                 theme={{ roundness: 10 }}
                 label={USERNAME}
                 mode={OUTLINED}
-                onChangeText={(value) => setName(value)}
+                onChangeText={(value) => dispatch(setName(value))}
                 value={name}
             />
-
             <TextInput 
                 style={styles.input}
                 theme={{ roundness: 10 }}
                 label={PASSWORD}
                 mode={OUTLINED}
-                onChangeText={(value) => setPassword(value)}
-                value={password}
+                onChangeText={(value) => dispatch(setAge(value))}
+                value={age}
             />
 
-            <Button theme={{ roundness: 6 }} mode={CONTAINED} style={styles.button} onPress={() => {handleLoginPress()}} >Sign up</Button>
+            <Button icon={LOGIN} theme={{ roundness: 6 }} mode={CONTAINED} style={styles.button} onPress={() => {handleLoginPress()}} >Sign up</Button>
 
             <Text style={styles.aboutAuthor} >
                 Learn more about: <Text onPress={() => navigation.navigate('About')} style={styles.seun} >Seun Fagade</Text>
             </Text>
-
         </SafeAreaView>
     )
 }

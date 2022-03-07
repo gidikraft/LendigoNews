@@ -4,49 +4,55 @@ import { CONSTANTS } from "../utils/Constants";
 const { deviceHeight, deviceWidth } = Dimensions.get('window');
 const { 
     CENTER,
-    BLACK,
     PRIMARY_COLOR,
-    SECONDARY_COLOR,
-    DODSIS_LIGHT,
     DOSIS_REGULAR,
     DOSIS_BOLD,
     BACKGROUND_COLOR,
-    PLACEHOLDER_COLOR,
-
+    ONE,
+    TEN,
+    TWENTY,
+    TWENTY_FOUR,
+    THIRTY,
+    FIFTY,
+    SEVENTY,
+    TWO_HUNDRED,
+    WHITE
 } = CONSTANTS
 
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
-        padding: 10,
+        flex: ONE,
+        padding: TEN,
         backgroundColor: BACKGROUND_COLOR,
         height: deviceHeight,
         width: deviceWidth,
     },
     header : {
         alignSelf: CENTER,
-        fontSize: 30,
-        marginVertical: 20,
-        marginTop: 70,
+        fontSize: THIRTY,
+        marginVertical: TWENTY,
+        marginTop: SEVENTY,
         fontFamily: DOSIS_BOLD,
+        color: WHITE
     },
     input: {
-        marginTop: 30,
-        marginHorizontal: 20,
-        borderRadius: 10,
+        marginTop: THIRTY,
+        marginHorizontal: TWENTY,
+        borderRadius: TEN,
         
     },
     button: {
-        marginTop: 50,
-        width: 200,
+        marginTop: FIFTY,
+        width: TWO_HUNDRED,
         alignSelf: CENTER,
     },
     aboutAuthor: {
         textAlign: CENTER,
-        fontSize: 24,
-        marginTop: 30,
+        fontSize: TWENTY_FOUR,
+        marginTop: THIRTY,
         fontFamily: DOSIS_REGULAR,
+        color: WHITE
     },
     seun: {
         color: PRIMARY_COLOR,

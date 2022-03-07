@@ -12,69 +12,88 @@ const {
     DOSIS_REGULAR,
     DOSIS_BOLD,
     FLEX_END,
-    SECONDARY_COLOR,
+    ONE,
+    TWO,
+    THREE,
+    FIVE,
+    TEN,
+    FIFTEEN,
+    EIGHTEEN, 
+    TWENTY,
+    TWENTY_FOUR,
+    THIRTY,
+    THREE_HUNDRED,
     BACKGROUND_COLOR,
     NEWS_BACKGROUND,
     SPACE_EVENLY,
-
+    WHITE
 } = CONSTANTS
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
-        padding: 10,
+        flex: ONE,
+        padding: TEN,
         backgroundColor: BACKGROUND_COLOR,
         height: deviceHeight,
         width: deviceWidth,
     },
+    logoutView: {
+        flexDirection: ROW,
+        justifyContent: FLEX_END,
+        alignItems: CENTER,
+        marginRight: TEN,
+        marginTop: TWENTY,
+    },
     logout: {
-        alignSelf: FLEX_END,
-        marginRight: 30,
-        marginTop: 20,
+        marginRight: TEN,
+        color: WHITE,
+        fontSize: EIGHTEEN,
+        fontFamily: DOSIS_BOLD
     },
     header : {
         alignSelf: CENTER,
-        fontSize: 30,
-        marginTop: 30,
-        fontFamily: DOSIS_BOLD
+        fontSize: THIRTY,
+        marginTop: THIRTY,
+        fontFamily: DOSIS_BOLD,
+        color: WHITE
     },
     headerSubtitle: {
         alignSelf: CENTER,
-        fontSize: 24,
-        marginVertical: 20,
-
+        fontSize: TWENTY_FOUR,
+        marginVertical: TWENTY,
+        color: WHITE
     },
     news: {
-        paddingVertical: 5,
+        paddingVertical: FIVE,
         overflow: HIDDEN,
         shadowColor: BLACK,
-        shadowRadius: 10,
-        shadowOpacity: 1,
-        margin: 10,
+        shadowRadius: TEN,
+        shadowOpacity: ONE,
+        margin: TEN,
         backgroundColor: NEWS_BACKGROUND,
-        borderRadius: 10,
-        padding: 10,
+        borderRadius: TEN,
+        padding: TEN,
     },
     newsBody: {
-        flex: 3,
+        flex: THREE,
         flexDirection: ROW,
-        marginTop: 15,
+        marginTop: FIFTEEN,
         justifyContent: SPACE_EVENLY,
-        paddingHorizontal: 5
+        paddingHorizontal: FIVE
     },
     newsAuthor: {
-        flex: 1,
+        flex: ONE,
         fontWeight: BOLD,
-        fontSize: 15
+        fontSize: FIFTEEN
     },
     newsTitle: {
-        flex: 2,
+        flex: TWO,
         
     },
     createdAt: {
         fontWeight: BOLD,
         alignSelf: FLEX_END,
-        marginTop: 10,
+        marginTop: TEN,
         
     },
     points: {
@@ -82,10 +101,17 @@ export default StyleSheet.create({
         fontWeight: BOLD,
         color: PRIMARY_COLOR,
         alignSelf: FLEX_END,
-        marginBottom: 10,
+        marginBottom: TEN,
     },
     footerView: {
         flexDirection: ROW,
         justifyContent: FLEX_END
     },
+    errorMessage: {
+        textAlign: CENTER
+    },
+    activityIndicator: {
+        color: PRIMARY_COLOR,
+        marginTop: THREE_HUNDRED,
+    }
 })

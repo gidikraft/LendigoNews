@@ -13,51 +13,64 @@ const { CENTER,
     BOLD,
     FLEX_END,
     HUNDRED_PC,
-    EIGHTY_PC
+    EIGHTY_PC,
+    ONE,
+    FIVE,
+    TEN,
+    TWENTY,
+    TWENTY_FOUR,
+    THIRTY,
+    THIRTY_SIX,
+    THREE_HUNDRED,
 } = CONSTANTS
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
+        flex: ONE,
         height: deviceHeight,
         width: deviceWidth,
     },
+    homeView: {
+        flexDirection: ROW,
+        justifyContent: FLEX_END,
+        alignItems: CENTER,
+        marginRight: THIRTY,
+        marginTop: TWENTY,
+    },
     homepage: {
-        alignSelf: FLEX_END,
-        fontSize: 18,
+        fontSize: TWENTY,
         fontFamily: DOSIS_BOLD,
-        marginRight: 30,
-        marginTop: 10,
+        marginRight: FIVE,
         color: PRIMARY_COLOR
     },
     authorView: {
-        padding: 10,
+        padding: TEN,
 
     },
     cardView: {
-        marginTop: 20
+        marginTop: TWENTY
     },
     cardHeaderText: {
         textAlign: CENTER,
-        fontSize: 36,
-        marginBottom: 10,
+        fontSize: THIRTY_SIX,
+        marginBottom: TEN,
         fontFamily: DOSIS_BOLD,
 
     },
     cardText: {
         textAlign: CENTER,
-        fontSize: 20,
-        marginBottom: 10
+        fontSize: TWENTY,
+        marginBottom: TEN
 
     },
     mainImageView: {
-        height: 300,
+        height: THREE_HUNDRED,
         overflow: HIDDEN,
         shadowColor: BLACK,
-        shadowRadius: 10,
-        shadowOpacity: 1,
-        padding: 10,
-        marginVertical: 30,
+        shadowRadius: TEN,
+        shadowOpacity: ONE,
+        padding: TEN,
+        marginVertical: THIRTY,
         width: HUNDRED_PC
         
     },
@@ -65,39 +78,39 @@ export default StyleSheet.create({
         alignSelf: CENTER,
         width: EIGHTY_PC,
         height: HUNDRED_PC,
-        borderRadius: 20
+        borderRadius: TWENTY
     },
     main: {
-        padding: 10
+        padding: TEN
     },
     mainSummary: {
         textAlign: CENTER,
-        fontSize: 24,
-        marginBottom: 10
-
+        fontSize: TWENTY_FOUR,
+        marginBottom: TEN,
+        fontFamily: DOSIS_BOLD
     },
     mainText: {
         textAlign: CENTER,
-        fontSize: 18,
+        fontSize: TWENTY,
         fontFamily: DOSIS_REGULAR,
-        padding: 5,
+        padding: FIVE,
 
     },
     footerText: {
         textAlign: CENTER,
-        fontFamily: DOSIS_REGULAR,
-        fontSize: 20,
+        fontFamily: DOSIS_BOLD,
+        fontSize: TWENTY,
         fontWeight: BOLD,
     },
     footerView: {
         flexDirection: ROW,
-        marginTop: 15,
+        marginTop: TEN,
         alignSelf: CENTER,
-        padding: 20,
+        padding: TWENTY,
 
     },
     footerItem: {
-        marginRight: 20,
+        marginRight: TWENTY,
 
     }
 })

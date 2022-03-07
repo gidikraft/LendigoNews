@@ -2,6 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import RootStackNavigator from './src/navigation/RootNavigation';
 import { useFonts, Dosis_200ExtraLight, Dosis_400Regular, Dosis_700Bold } from '@expo-google-fonts/dosis';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Provider as StoreProvider } from 'react-redux';
+import { Store } from './src/redux/store';
 import AppLoading from 'expo-app-loading';
 import { CONSTANTS } from './src/utils/Constants';
 
@@ -35,12 +37,13 @@ export default function App() {
   }
 
   return (
-    <PaperProvider theme={appTheme}>
-      <NavigationContainer>
-        <RootStackNavigator />
-      </NavigationContainer>
-    </PaperProvider>
-    
+    <StoreProvider store={Store}>
+      <PaperProvider theme={appTheme}>
+        <NavigationContainer>
+          <RootStackNavigator />
+        </NavigationContainer>
+      </PaperProvider>
+    </StoreProvider>
     
   );
 }
