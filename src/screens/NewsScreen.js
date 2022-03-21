@@ -12,34 +12,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styles from '../screen.styles.js/NewsScreenStyles';
 import * as SQLite from "expo-sqlite";
 import axios from 'axios';
-import { CONSTANTS } from '../utils/Constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName, setAge } from '../redux/actions';
+import { Color, Errors, Url, Constants, Numbers, Queries } from "../utils/Constants";
 
 const db = SQLite.openDatabase('db.testDb') // returns Database object
 
 export default function NewsScreen({ navigation }) {
-    const { 
-        NEWSURL, 
-        FETCH_NEWS_ERROR, 
-        RESPONSE_ERROR,
-        CREATE_TABLE_QUERY,
-        FETCH_DATA_QUERY,
-        DELETE_DATA_QUERY,
-        PRIMARY_COLOR,
-        WHITE,
-        ZERO,
-        ONE,
-        TEN,
-        ELEVEN,
-        NINETEEN,
-        TWENTY_FOUR,
-        TWO_HUNDRED,
-        TWO_THOUSAND,
-        SIGN_OUT,
-        LARGE,
-    } = CONSTANTS;
 
     const { name, age } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
@@ -50,22 +30,22 @@ export default function NewsScreen({ navigation }) {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
 
-    const newsURL = `${NEWSURL}${page}`
+    const newsURL = `${Url.NEWSURL}${page}`
 
     // Invoking get method to to get news from Hacker News API
     const fetchNews = async () => {
         try {
             setIsLoading(true);
             const response = await axios.get(newsURL);
-            if (response.status === TWO_HUNDRED) {
+            if (response.status === Numbers.TWO_HUNDRED) {
                 setNews(response.data.hits);
                 setIsLoading(false);
                 return;
             } else {
-                throw new Error(RESPONSE_ERROR);
+                throw new Error(Errors.RESPONSE_ERROR);
             }
         } catch (error) {
-            console.log(FETCH_NEWS_ERROR);
+            console.log(Errors.FETCH_NEWS_ERROR);
             setErrorMessage(error)
         }
         console.log(response.data);
@@ -75,7 +55,7 @@ export default function NewsScreen({ navigation }) {
     const createTable = () => {
         db.transaction(tx => {
             tx.executeSql(
-                CREATE_TABLE_QUERY
+                Queries.CREATE_TABLE_QUERY
             )
         })
     }
@@ -85,7 +65,7 @@ export default function NewsScreen({ navigation }) {
         try {
             db.transaction((tx) => {
                 tx.executeSql(
-                    FETCH_DATA_QUERY,
+                    Queries.FETCH_DATA_QUERY,
                     [],
                     (tx, result) => {
                         var len = result.rows.length;
@@ -95,9 +75,9 @@ export default function NewsScreen({ navigation }) {
                             var userName = result.rows.item(len).text
                             var userAge = result.rows.item(len).count
                             
-                            console.log(result.rows)
                             dispatch(setName(userName))
                             dispatch(setAge(userAge))
+                            console.log(result)
                         }
                     }
                 ) 
@@ -109,40 +89,29 @@ export default function NewsScreen({ navigation }) {
 
     //sign out by removing user from db
     const removeData = () => {
-        try {
-            db.transaction((tx) => {
-                tx.executeSql((
-                    'DELETE * FROM items',
-                    [],
-
-                    (tx, results) => {
-                        console.log('Results', results.rowsAffected);
-                        if (results.rowsAffected > 0) {
-                          Alert.alert(
-                            'Success',
-                            'Signed out successfully',
+        db.transaction((tx) => {
+            tx.executeSql(
+                Queries.DELETE_DATA_QUERY,
+                [],
+                (tx, res) => {
+                    if (res.rowsAffected > 0) {
+                        Alert.alert(
+                            Constants.SUCCESS,
+                            Constants.LOGOUT_MESSAGE,
                             [
-                              {
-                                text: 'Ok',
+                                {
+                                text: Constants.OK,
                                 onPress: () => navigation.navigate('Welcome'),
-                              },
+                                },
                             ],
                             { cancelable: false }
-                          );
-                        } else {
-                          alert('Please insert a valid User Id');
-                        }
-                    },
-                    // DELETE_DATA_QUERY,
-                    // [],
-                    // () => { navigation.navigate("Welcome") },
-                    error => { console.log(error) }
-                ))
-            })
-            console.log(name)
-        } catch (error) {
-            console.log(error)
-        }
+                        );
+                    } else {
+                        alert(Constants.LOGOUT_ERROR);
+                    }
+                }
+            );
+        });
     }
 
     useEffect(() => {
@@ -161,7 +130,7 @@ export default function NewsScreen({ navigation }) {
     const pullToRefresh = useCallback(() => {
         setIsRefreshing(true);
         fetchNews();
-        wait(TWO_THOUSAND).then(() => setIsRefreshing(false));
+        wait(Numbers.TWO_THOUSAND).then(() => setIsRefreshing(false));
       }, []);
 
     //render flatlist items
@@ -171,14 +140,14 @@ export default function NewsScreen({ navigation }) {
                 <View style={styles.news}>
                     <View style={styles.newsBody}>
                         <Text style={styles.newsAuthor}>
-                            {item.author.charAt(ZERO).toUpperCase() + item.author.slice(ONE)}
+                            {item.author.charAt(Numbers.ZERO).toUpperCase() + item.author.slice(Numbers.ONE)}
                         </Text>
                         <Text style={styles.newsTitle}>
                             {item.title}
                         </Text>
                     </View>
                     <Text style={styles.createdAt}>
-                        { item.created_at.slice(ELEVEN, NINETEEN) + ' ' + item.created_at.slice(ZERO, TEN)}
+                        { item.created_at.slice(Numbers.ELEVEN, Numbers.NINETEEN) + ' ' + item.created_at.slice(Numbers.ZERO, Numbers.TEN)}
                     </Text>
                     <Text style={styles.points}>Views: {item.points}</Text>
                 </View>
@@ -190,22 +159,22 @@ export default function NewsScreen({ navigation }) {
         return (
             <SafeAreaView style={styles.container}>
                 <View style={styles.logoutView}>
-                    <Text style={styles.logout} onPress={() => {navigation.navigate('Welcome')}} >Logout</Text>
-                    <FontAwesome name={SIGN_OUT} size={TWENTY_FOUR} color={WHITE} />
+                    <Text style={styles.logout} onPress={() => removeData()}>Logout</Text>
+                    <FontAwesome name={Constants.SIGN_OUT} size={Numbers.TWENTY_FOUR} color={Color.WHITE} />
                 </View>
-                <Text style={styles.header} onPress={() => {removeData()}} >Welcome back {name} </Text>
+                <Text style={styles.header} onPress={() => navigation.navigate("Welcome") }>Welcome back {name} </Text>
                 <Text style={styles.headerSubtitle}>Latest update from Hacker News!</Text>
 
                 <FlatList 
                     data = {news}
                     keyExtractor={(item, itemIndex) => itemIndex}
-                    onEndReachedThreshold={ZERO}
-                    onEndReached={() => setPage(page+ONE)}
+                    onEndReachedThreshold={Numbers.ZERO}
+                    onEndReached={() => setPage(page+Numbers.ONE)}
                     refreshControl={
                         <RefreshControl
                             refreshing={isRefreshing}
                             onRefresh={pullToRefresh}
-                            tintColor={PRIMARY_COLOR}
+                            tintColor={Color.PRIMARY_COLOR}
                         />
                     }
                     renderItem={renderNews} 
@@ -215,13 +184,18 @@ export default function NewsScreen({ navigation }) {
     } else if (errorMessage) {
         return (
             <View style={styles.container}>
-              <Text style={styles.errorMessage}>{errorMessage}</Text>
+                <Text style={styles.errorMessage}>{errorMessage}</Text>
             </View>
         );
     } else {
         return (
             <View style={styles.container}>
-              <ActivityIndicator animating={true} size={LARGE} style={styles.activityIndicator} color={PRIMARY_COLOR} />
+                <ActivityIndicator 
+                    animating={true} 
+                    size={Constants.LARGE} 
+                    style={styles.activityIndicator} 
+                    color={Color.PRIMARY_COLOR} 
+                />
             </View>
         );
     }

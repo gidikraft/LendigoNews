@@ -1,119 +1,93 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { CONSTANTS } from "../utils/Constants";
+import { Color, Constants, Fonts, Numbers } from "../utils/Constants";
 
 const { deviceHeight, deviceWidth } = Dimensions.get('window');
-const { 
-    CENTER, 
-    ROW, 
-    HIDDEN,
-    BOLD,
-    BLACK,
-    PRIMARY_COLOR,
-    DOSIS_REGULAR,
-    DOSIS_BOLD,
-    FLEX_END,
-    ONE,
-    TWO,
-    THREE,
-    FIVE,
-    TEN,
-    FIFTEEN,
-    EIGHTEEN, 
-    TWENTY,
-    TWENTY_FOUR,
-    THIRTY,
-    THREE_HUNDRED,
-    BACKGROUND_COLOR,
-    NEWS_BACKGROUND,
-    SPACE_EVENLY,
-    WHITE
-} = CONSTANTS
 
 export default StyleSheet.create({
     container: {
-        flex: ONE,
-        padding: TEN,
-        backgroundColor: BACKGROUND_COLOR,
+        flex: Numbers.ONE,
+        padding: Numbers.TEN,
+        backgroundColor: Color.BACKGROUND_COLOR,
         height: deviceHeight,
         width: deviceWidth,
     },
     logoutView: {
-        flexDirection: ROW,
-        justifyContent: FLEX_END,
-        alignItems: CENTER,
-        marginRight: TEN,
-        marginTop: THIRTY,
+        flexDirection: Constants.ROW,
+        justifyContent: Constants.FLEX_END,
+        alignItems: Constants.CENTER,
+        marginRight: Numbers.TEN,
+        marginTop: Numbers.THIRTY,
     },
     logout: {
-        marginRight: TEN,
-        color: WHITE,
-        fontSize: EIGHTEEN,
-        fontFamily: DOSIS_BOLD
+        marginRight: Numbers.TEN,
+        color: Color.WHITE,
+        fontSize: Numbers.EIGHTEEN,
+        fontFamily: Fonts.DOSIS_BOLD
     },
     header : {
-        alignSelf: CENTER,
-        fontSize: THIRTY,
-        marginTop: TEN,
-        fontFamily: DOSIS_BOLD,
-        color: WHITE
+        alignSelf: Constants.CENTER,
+        fontSize: Numbers.THIRTY,
+        marginTop: Numbers.TEN,
+        fontFamily: Fonts.DOSIS_BOLD,
+        color: Color.WHITE
     },
     headerSubtitle: {
-        alignSelf: CENTER,
-        fontSize: TWENTY_FOUR,
-        marginVertical: TWENTY,
-        color: WHITE
+        alignSelf: Constants.CENTER,
+        fontSize: Numbers.TWENTY_FOUR,
+        marginVertical: Numbers.TWENTY,
+        color: Color.WHITE
     },
     news: {
-        paddingVertical: FIVE,
-        overflow: HIDDEN,
-        shadowColor: BLACK,
-        shadowRadius: TEN,
-        shadowOpacity: ONE,
-        margin: TEN,
-        backgroundColor: NEWS_BACKGROUND,
-        borderRadius: TEN,
-        padding: TEN,
+        paddingVertical: Numbers.FIVE,
+        overflow: Constants.HIDDEN,
+        shadowColor: Color.BLACK,
+        shadowRadius: Numbers.TEN,
+        shadowOpacity: Numbers.ONE,
+        margin: Numbers.TEN,
+        backgroundColor: Color.NEWS_BACKGROUND,
+        borderRadius: Numbers.TEN,
+        padding: Numbers.TEN,
     },
     newsBody: {
-        flex: THREE,
-        flexDirection: ROW,
-        marginTop: FIFTEEN,
-        justifyContent: SPACE_EVENLY,
-        paddingHorizontal: FIVE
+        flex: Numbers.THREE,
+        flexDirection: Constants.ROW,
+        marginTop: Numbers.FIFTEEN,
+        justifyContent: Constants.SPACE_EVENLY,
+        paddingHorizontal: Numbers.FIVE
     },
     newsAuthor: {
-        flex: ONE,
-        fontWeight: BOLD,
-        fontSize: FIFTEEN
+        flex: Numbers.ONE,
+        fontWeight: Constants.BOLD,
+        fontSize: Numbers.FIFTEEN
     },
     newsTitle: {
-        flex: TWO,
+        flex: Numbers.TWO,
         
     },
     createdAt: {
-        fontWeight: BOLD,
-        alignSelf: FLEX_END,
-        marginTop: TEN,
-        marginRight: THIRTY,
+        fontWeight: Constants.BOLD,
+        alignSelf: Constants.FLEX_END,
+        marginTop: Numbers.TEN,
+        marginRight: Numbers.THIRTY,
         
     },
     points: {
-        fontFamily: DOSIS_REGULAR,
-        fontWeight: BOLD,
-        color: PRIMARY_COLOR,
-        alignSelf: FLEX_END,
-        marginBottom: TEN,
-        marginRight: THIRTY,
+        fontFamily: Fonts.DOSIS_REGULAR,
+        fontWeight: Constants.BOLD,
+        color: Color.PRIMARY_COLOR,
+        alignSelf: Constants.FLEX_END,
+        marginBottom: Numbers.TEN,
+        marginRight: Numbers.THIRTY,
     },
     footerView: {
-        flexDirection: ROW,
-        justifyContent: FLEX_END
+        flexDirection: Constants.ROW,
+        justifyContent: Constants.FLEX_END
     },
     errorMessage: {
-        textAlign: CENTER
+        textAlign: Constants.CENTER
     },
     activityIndicator: {
-        color: PRIMARY_COLOR,
-        marginTop: THREE_HUNDRED,
+        color: Color.PRIMARY_COLOR,
+        marginTop: Numbers.THREE_HUNDRED,
     }
 })

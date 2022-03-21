@@ -1,61 +1,45 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { CONSTANTS } from "../utils/Constants";
+// import { CONSTANTS } from "../utils/Constants";
+import { Color, Constants, Fonts, Numbers } from "../utils/Constants";
 
 const { deviceHeight, deviceWidth } = Dimensions.get('window');
-const { 
-    CENTER,
-    PRIMARY_COLOR,
-    DOSIS_REGULAR,
-    DOSIS_BOLD,
-    BACKGROUND_COLOR,
-    ONE,
-    TEN,
-    TWENTY,
-    TWENTY_FOUR,
-    THIRTY,
-    FIFTY,
-    SEVENTY,
-    TWO_HUNDRED,
-    WHITE
-} = CONSTANTS
-
 
 export default StyleSheet.create({
     container: {
-        flex: ONE,
-        padding: TEN,
-        backgroundColor: BACKGROUND_COLOR,
+        flex: Numbers.ONE,
+        padding: Numbers.TEN,
+        backgroundColor: Color.BACKGROUND_COLOR,
         height: deviceHeight,
         width: deviceWidth,
     },
     header : {
-        alignSelf: CENTER,
-        fontSize: THIRTY,
-        marginVertical: TWENTY,
-        marginTop: SEVENTY,
-        fontFamily: DOSIS_BOLD,
-        color: WHITE
+        alignSelf: Constants.CENTER,
+        fontSize: Numbers.THIRTY,
+        marginVertical: Numbers.TWENTY,
+        marginTop: Numbers.SEVENTY,
+        fontFamily: Fonts.DOSIS_BOLD,
+        color: Color.WHITE
     },
     input: {
-        marginTop: THIRTY,
-        marginHorizontal: TWENTY,
-        borderRadius: TEN,
+        marginTop: Numbers.THIRTY,
+        marginHorizontal: Numbers.TWENTY,
+        borderRadius: Numbers.TEN,
         
     },
     button: {
-        marginTop: FIFTY,
-        width: TWO_HUNDRED,
-        alignSelf: CENTER,
+        marginTop: Numbers.FIFTY,
+        width: Numbers.TWO_HUNDRED,
+        alignSelf: Constants.CENTER,
     },
     aboutAuthor: {
-        textAlign: CENTER,
-        fontSize: TWENTY_FOUR,
-        marginTop: THIRTY,
-        fontFamily: DOSIS_REGULAR,
-        color: WHITE
+        textAlign: Constants.CENTER,
+        fontSize: Numbers.TWENTY_FOUR,
+        marginTop: Numbers.THIRTY,
+        fontFamily: Fonts.DOSIS_REGULAR,
+        color: Color.WHITE
     },
     seun: {
-        color: PRIMARY_COLOR,
-        fontFamily: DOSIS_BOLD,
+        color: Color.PRIMARY_COLOR,
+        fontFamily: Fonts.DOSIS_BOLD,
     }
 })

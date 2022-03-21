@@ -5,22 +5,16 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux';
 import { Store } from './src/redux/store';
 import AppLoading from 'expo-app-loading';
-import { CONSTANTS } from './src/utils/Constants';
-
-const {
-  PRIMARY_COLOR,
-  PLACEHOLDER_COLOR,
-  ACCENT_COLOR
-} = CONSTANTS
+import { Color } from './src/utils/Constants';
 
 const appTheme = {
   ...DefaultTheme,
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,
-    primary: PRIMARY_COLOR,
-    accent: ACCENT_COLOR,
-    placeholder: PLACEHOLDER_COLOR,
+    primary: Color.PRIMARY_COLOR,
+    accent: Color.ACCENT_COLOR,
+    placeholder: Color.PLACEHOLDER_COLOR,
   },
 };
 

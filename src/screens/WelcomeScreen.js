@@ -5,21 +5,7 @@ import styles from '../screen.styles.js/WelcomeScreenStyles';
 import * as SQLite from 'expo-sqlite';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName, setAge } from '../redux/actions';
-import { CONSTANTS } from '../utils/Constants';
-
-const { 
-    FETCH_DATA_QUERY, 
-    CREATE_TABLE_QUERY,
-    INSERT_ITEM_QUERY,
-    ERROR,
-    ALERT_MESSAGE,
-    CONTAINED,
-    USERNAME,
-    PASSWORD,
-    OUTLINED,
-    LOGIN,
-    TWENTY
-} = CONSTANTS
+import { Errors, Constants, Numbers, Queries } from "../utils/Constants";
 
 const db = SQLite.openDatabase('db.testDb') // returns Database object
 
@@ -33,7 +19,7 @@ export default function WelcomeScreen({navigation}) {
     const createTable = () => {
         db.transaction(tx => {
             tx.executeSql(
-                CREATE_TABLE_QUERY
+                Queries.CREATE_TABLE_QUERY
             )
         })
     }
@@ -43,7 +29,7 @@ export default function WelcomeScreen({navigation}) {
         try {
             db.transaction((tx) => {
                 tx.executeSql(
-                    FETCH_DATA_QUERY,
+                    Queries.FETCH_DATA_QUERY,
                     [],
                     (tx, result) => {
                         var len = result.rows.length;
@@ -64,16 +50,16 @@ export default function WelcomeScreen({navigation}) {
         dispatch(setAge(age))
 
         db.transaction(tx => {
-            tx.executeSql(INSERT_ITEM_QUERY, [name, age],
+            tx.executeSql(Queries.INSERT_ITEM_QUERY, [name, age],
                 (txObj, resultSet) => setData({ data: data.concat(
                     { id: resultSet.insertId, text: name, count: age }) }),
-                (txObj, error) => console.log(ERROR, error),
+                (txObj, error) => console.log(Errors.ERROR, error),
                 navigation.navigate("News"),
             )
         })
     }
 
-    const handleLoginPress = () => (name.length > 4 && name != '') ? addNewItem() : Alert.alert(ALERT_MESSAGE);
+    const handleLoginPress = () => (name.length > 4 && name != '') ? addNewItem() : Alert.alert(Errors.ALERT_MESSAGE);
 
     useEffect(() => {
         createTable()
@@ -85,25 +71,39 @@ export default function WelcomeScreen({navigation}) {
             <Text style={styles.header}>Welcome to LendigoNews</Text>
             <TextInput 
                 style={styles.input}
-                theme={{ roundness: TWENTY }}
-                label={USERNAME}
-                mode={OUTLINED}
+                theme={{ roundness: Numbers.TWENTY }}
+                label={Constants.USERNAME}
+                mode={Constants.OUTLINED}
                 onChangeText={(value) => dispatch(setName(value))}
                 value={name}
             />
             <TextInput 
                 style={styles.input}
-                theme={{ roundness: TWENTY }}
-                label={PASSWORD}
-                mode={OUTLINED}
+                theme={{ roundness: Numbers.TWENTY }}
+                label={Constants.PASSWORD}
+                mode={Constants.OUTLINED}
                 onChangeText={(value) => dispatch(setAge(value))}
                 value={age}
             />
 
-            <Button icon={LOGIN} theme={{ roundness: TWENTY }} mode={CONTAINED} style={styles.button} onPress={() => {handleLoginPress()}} >Sign up</Button>
+            <Button 
+                icon={Constants.LOGIN} 
+                theme={{ roundness: Numbers.TWENTY }} 
+                mode={Constants.CONTAINED} 
+                style={styles.button} 
+                onPress={() => {handleLoginPress()}} 
+            >
+                Sign up
+            </Button>
 
             <Text style={styles.aboutAuthor} >
-                Learn more about: <Text onPress={() => navigation.navigate('About')} style={styles.seun} >Seun Fagade</Text>
+                Learn more about: 
+                <Text 
+                onPress={() => navigation.navigate('About')} 
+                style={styles.seun} 
+                >
+                    Seun Fagade
+                </Text>
             </Text>
         </SafeAreaView>
     )

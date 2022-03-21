@@ -1,34 +1,22 @@
-import { View, Image, Text, SafeAreaView, Linking, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Image, Text, SafeAreaView, Linking, TouchableOpacity } from 'react-native'
 import React from 'react';
-import { CONSTANTS } from '../utils/Constants';
 import styles from '../screen.styles.js/AboutScreenStyles';
 import { FontAwesome } from '@expo/vector-icons';
 import bgImage from '../../assets/recent_seun.png';
 import { Ionicons } from '@expo/vector-icons';
-
-const { 
-    GITHUB_URL, 
-    LINKEDIN_URL, 
-    CENTER, 
-    BLACK,
-    HOME_OUTLINE,
-    PRIMARY_COLOR,
-    LINKEDIN_COLOR,
-    GITHUB,
-    LINKEDIN_ICON,
-} = CONSTANTS
+import { Color, Constants, Url } from "../utils/Constants";
 
 export default function AboutScreen({ navigation }) {
 
-const linkedinPressHandler = () => Linking.openURL(LINKEDIN_URL)
+    const linkedinPressHandler = () => Linking.openURL(Url.LINKEDIN_URL)
 
-const githubPressHandler = () => Linking.openURL(GITHUB_URL)
+    const githubPressHandler = () => Linking.openURL(Url.GITHUB_URL)
+
     return (
-        // <ScrollView >
             <SafeAreaView style={styles.container}>
                 <View style={styles.homeView}>
                     <Text style={styles.homepage} onPress={() => navigation.navigate('Welcome')}>Home</Text>
-                    <Ionicons name={HOME_OUTLINE} size={24} color={PRIMARY_COLOR} />
+                    <Ionicons name={Constants.HOME_OUTLINE} size={24} color={Color.PRIMARY_COLOR} />
                 </View>
                 <View style={styles.authorView}>
                     <View style={styles.cardView} >
@@ -38,7 +26,7 @@ const githubPressHandler = () => Linking.openURL(GITHUB_URL)
                 </View>
 
                 <View style={styles.mainImageView}>
-                    <Image source={bgImage} resizeMode={CENTER} style={styles.banner}/>  
+                    <Image source={bgImage} resizeMode={Constants.CENTER} style={styles.banner}/>  
                 </View>
 
                 <View style={styles.main}>
@@ -50,16 +38,24 @@ const githubPressHandler = () => Linking.openURL(GITHUB_URL)
 
                 <Text style={styles.footerText}>Follow the author on:</Text>
                 <View style={styles.footerView} >
-                    {/* <FontAwesome name="twitter" size={28} color="blue"  style={styles.footerItem}/> */}
                     <TouchableOpacity onPress={linkedinPressHandler}>
-                        <FontAwesome name={LINKEDIN_ICON} size={28} color={LINKEDIN_COLOR} style={styles.footerItem} />
+                        <FontAwesome 
+                            name={Constants.LINKEDIN_ICON} 
+                            size={28} 
+                            color={Color.LINKEDIN_COLOR} 
+                            style={styles.footerItem} 
+                        />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={githubPressHandler} >
-                        <FontAwesome name={GITHUB} size={28} color={BLACK} style={styles.footerItem}/>
+                        <FontAwesome 
+                            name={Constants.GITHUB} 
+                            size={28} 
+                            color={Color.BLACK} 
+                            style={styles.footerItem}
+                        />
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
-        // </ScrollView>
 
     )
 }
